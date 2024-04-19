@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Rate, Space, Table, Tag } from 'antd';
+import { Button, message, Popconfirm, Rate, Space, Table, Tag } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 function makeFirstInUpperCase(text) {
     return text[0].toUpperCase() + text.slice(1);
 }
+
+const confirm = (id) => {
+    console.log("Deleting product: ", id);
+    message.success(`Deleting product {${id}}...`);
+};
 
 const columns = [
     {
@@ -46,8 +52,16 @@ const columns = [
         key: 'action',
         render: (_, record) => (
             <Space size="middle">
-                <a>Invite {record.name}</a>
-                <a>Delete</a>
+                <a>Show</a>
+                <Popconfirm
+                    title="Delete the task"
+                    description="Are you sure to delete this task?"
+                    onConfirm={() => confirm(record.id)}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <Button danger>Delete</Button>
+                </Popconfirm>
             </Space>
         ),
     },
@@ -76,7 +90,9 @@ export default function Products() {
     }, []);
 
     return (
-        <Table columns={columns} dataSource={products} pagination={{ pageSize: 5 }} />
+        <Table columns={columns} dataSource={products}
+            pagination={{ pageSize: 5 }}
+            rowKey="id" />
     );
 }
 

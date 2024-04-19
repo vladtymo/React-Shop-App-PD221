@@ -1,9 +1,26 @@
 import React, { lazy } from 'react'
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
-import { HomeOutlined, PlayCircleOutlined, ProductOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import Icon from '@ant-design/icons/lib/components/Icon';
-const { Header, Content, Footer } = Layout;
+import { HomeOutlined, ProductOutlined, UnorderedListOutlined } from '@ant-design/icons';
+const { Header } = Layout;
+
+const menuItems = [
+    {
+        key: 0,
+        label: <Link to="/">Home</Link>,
+        icon: <HomeOutlined />
+    },
+    {
+        key: 1,
+        label: <Link to="/products">Products</Link>,
+        icon: <ProductOutlined />
+    },
+    {
+        key: 2,
+        label: <Link to="/orders">Orders</Link>,
+        icon: <UnorderedListOutlined />
+    },
+]
 
 export default function Sidebar() {
     return (
@@ -17,27 +34,13 @@ export default function Sidebar() {
             <Menu
                 theme="dark"
                 mode="horizontal"
-                defaultSelectedKeys={['2']}
+                defaultSelectedKeys={['1']}
+                items={menuItems}
                 style={{
                     flex: 1,
                     minWidth: 0,
                 }}
             >
-                <Menu.Item key="1">
-                    <HomeOutlined />
-                    <span>Home</span>
-                    <Link to="/" />
-                </Menu.Item>
-                <Menu.Item key="2">
-                    <ProductOutlined />
-                    <span>Products</span>
-                    <Link to="products" />
-                </Menu.Item>
-                <Menu.Item key="3">
-                    <UnorderedListOutlined />
-                    <span>Orders</span>
-                    <Link to="orders" />
-                </Menu.Item>
             </Menu>
         </Header>
     )
