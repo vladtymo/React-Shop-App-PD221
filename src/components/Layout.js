@@ -12,11 +12,11 @@ export default function Layout() {
     } = theme.useToken();
 
     return (
-        <AntdLayout>
+        <AntdLayout className='Layout'>
 
             <Sidebar />
 
-            <Content
+            <Content className='main'
                 style={{
                     padding: '0 48px',
                 }}
