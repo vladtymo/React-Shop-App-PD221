@@ -9,7 +9,7 @@ export default function Footer() {
                 textAlign: 'center',
             }}
         >
-            Ant Design ©{new Date().getFullYear()} Created by Ant UED
+            React Shop App ©{new Date().getFullYear()} Created by PD221 Group
         </AntdFooter>
     )
 }
