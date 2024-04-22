@@ -1,28 +1,46 @@
-import React, { lazy } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd';
-import { Link } from 'react-router-dom';
-import { HomeOutlined, ProductOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { Link, useLocation } from 'react-router-dom';
+import { HomeOutlined, InfoCircleOutlined, ProductOutlined, UnorderedListOutlined } from '@ant-design/icons';
 const { Header } = Layout;
 
 const menuItems = [
     {
-        key: 0,
+        key: "/",
         label: <Link to="/">Home</Link>,
         icon: <HomeOutlined />
     },
     {
-        key: 1,
+        key: "/products",
         label: <Link to="/products">Products</Link>,
         icon: <ProductOutlined />
     },
     {
-        key: 2,
+        key: "/orders",
         label: <Link to="/orders">Orders</Link>,
         icon: <UnorderedListOutlined />
     },
+    {
+        key: "/about",
+        label: <Link to="/about">About</Link>,
+        icon: <InfoCircleOutlined />
+    }
 ]
 
 export default function Sidebar() {
+
+    let location = useLocation();
+
+    const [current, setCurrent] = useState(location.pathname);
+
+    useEffect(() => {
+        if (location) {
+            if (current !== location.pathname) {
+                setCurrent(location.pathname);
+            }
+        }
+    }, [location, current]);
+
     return (
         <Header
             style={{
@@ -34,7 +52,7 @@ export default function Sidebar() {
             <Menu
                 theme="dark"
                 mode="horizontal"
-                defaultSelectedKeys={['1']}
+                defaultSelectedKeys={[current]}
                 items={menuItems}
                 style={{
                     flex: 1,

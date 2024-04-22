@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, message, Popconfirm, Rate, Space, Table, Tag } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
+import { Outlet } from 'react-router-dom';
 
 function makeFirstInUpperCase(text) {
     return text[0].toUpperCase() + text.slice(1);
@@ -59,6 +60,7 @@ const columns = [
                     onConfirm={() => confirm(record.id)}
                     okText="Yes"
                     cancelText="No"
+                    placement='left'
                 >
                     <Button danger>Delete</Button>
                 </Popconfirm>
