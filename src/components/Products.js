@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, message, Popconfirm, Rate, Space, Table, Tag } from 'antd';
-import { ExclamationCircleFilled } from '@ant-design/icons';
-import { Outlet } from 'react-router-dom';
-
-function makeFirstInUpperCase(text) {
-    return text[0].toUpperCase() + text.slice(1);
-}
+import { makeFirstInUpperCase } from '../utils/utils';
+import { Link } from 'react-router-dom';
+import { productsService } from '../services/products';
 
 const confirm = (id) => {
     console.log("Deleting product: ", id);
@@ -20,8 +17,8 @@ const columns = [
     },
     {
         title: 'Image',
-        dataIndex: 'thumbnail',
-        key: 'image',
+        dataIndex: 'imageUrl',
+        key: 'imageUrl',
         render: (text) => <img style={imageStyle} height={50} src={text} alt='Product image' />,
     },
     {
@@ -32,8 +29,8 @@ const columns = [
     },
     {
         title: 'Category',
-        dataIndex: 'category',
-        key: 'category',
+        dataIndex: 'categoryName',
+        key: 'categoryName',
         render: (text) => <span>{makeFirstInUpperCase(text)}</span>,
     },
     {
@@ -44,9 +41,9 @@ const columns = [
     },
     {
         title: 'Rating',
-        dataIndex: 'rating',
-        key: 'rating',
-        render: (text) => <Rate disabled allowHalf defaultValue={text} />
+        dataIndex: 'discount',
+        key: 'discount',
+        render: (text) => <span>{text}%</span>,
     },
     {
         title: 'Action',
@@ -69,38 +66,36 @@ const columns = [
     },
 ];
 
-const api = "https://dummyjson.com/products";
 export default function Products() {
 
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-
         (async function () {
-            const response = await fetch(api);
-            const data = await response.json();
-            setProducts(data.products);
+            const response = await productsService.get();
+            setProducts(response.data);
         })();
-
-        // load data from server
-        // const response = fetch(api).then(res => {
-        //     return res.json();
-        // }).then(data => {
-        //     setProducts(data.products);
-        // });
-
     }, []);
 
     return (
-        <Table columns={columns} dataSource={products}
-            pagination={{ pageSize: 5 }}
-            rowKey="id" />
+        <>
+            <Button style={createBtn} type="primary">
+                <Link to="create">Create New Product</Link>
+            </Button>
+
+            <Table columns={columns} dataSource={products}
+                pagination={{ pageSize: 5 }}
+                rowKey="id" />
+        </>
     );
 }
 
 const imageStyle = {
-    width: 100,
-    height: 50,
+    width: 60,
+    height: 60,
     objectFit: "cover",
     borderRadius: 6
+}
+const createBtn = {
+    marginBottom: 10
 }
