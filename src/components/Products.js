@@ -63,8 +63,6 @@ const getColumns = (deleteHandler) => {
     ];
 }
 
-const apiUrl = "https://shop-api-pv221.azurewebsites.net";
-
 export default function Products() {
 
     const [products, setProducts] = useState([]);
@@ -78,7 +76,7 @@ export default function Products() {
             const items = response.data;
             for (const i of items) {
                 if (!i.imageUrl.includes("://"))
-                    i.imageUrl = apiUrl + i.imageUrl;
+                    i.imageUrl = process.env.REACT_APP_SERVER_HOST + i.imageUrl;
             }
 
             setProducts(items);

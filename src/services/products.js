@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-    baseURL: `https://shop-api-pv221.azurewebsites.net/api/products/`
+    baseURL: `${process.env.REACT_APP_API_URL}products`
 });
 
 // ----- put service methods to one object
