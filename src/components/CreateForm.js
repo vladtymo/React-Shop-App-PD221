@@ -1,13 +1,15 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input, InputNumber, Select, Space, Upload } from 'antd';
+import { Button, Checkbox, Form, Input, InputNumber, Select, Space, Upload, message } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { UploadOutlined } from '@ant-design/icons';
 import { productsService } from '../services/products';
+import { useNavigate } from "react-router-dom";
 const { Option } = Select;
 
 export default function CreateForm() {
 
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     const onFinish = async (values) => {
         console.log(values);
@@ -16,7 +18,11 @@ export default function CreateForm() {
         values.image = values.image.originFileObj;
 
         const response = await productsService.create(values);
-        console.log("Create status:", response.statusText);
+        if (response.status === 200) {
+
+            message.success(`Product created successfully!`);
+            navigate(-1);
+        }
     };
     const onReset = () => {
         form.resetFields();
@@ -30,7 +36,7 @@ export default function CreateForm() {
 
     return (
         <>
-            <h1>Create New Product</h1>
+            <h1 style={{ textAlign: "center" }}>Create New Product</h1>
             <Form
                 form={form}
                 name="control-hooks"
