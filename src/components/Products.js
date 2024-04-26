@@ -23,7 +23,7 @@ const columns = [
     },
     {
         title: 'Name',
-        dataIndex: 'title',
+        dataIndex: 'name',
         key: 'name',
         render: (text) => <a>{text}</a>,
     },
@@ -66,6 +66,8 @@ const columns = [
     },
 ];
 
+const apiUrl = "https://shop-api-pv221.azurewebsites.net";
+
 export default function Products() {
 
     const [products, setProducts] = useState([]);
@@ -73,7 +75,17 @@ export default function Products() {
     useEffect(() => {
         (async function () {
             const response = await productsService.get();
-            setProducts(response.data);
+
+            // TODO: fix server image url response
+            // set absolute path for images
+            const items = response.data;
+            for (const i of items) {
+                if (!i.imageUrl.includes("://"))
+                    i.imageUrl = apiUrl + i.imageUrl;
+            }
+
+            console.log(items);
+            setProducts(items);
         })();
     }, []);
 

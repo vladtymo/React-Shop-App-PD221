@@ -2,14 +2,18 @@ import React from 'react';
 import { Button, Checkbox, Form, Input, InputNumber, Select, Space, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { UploadOutlined } from '@ant-design/icons';
+import { productsService } from '../services/products';
 const { Option } = Select;
 
 export default function CreateForm() {
 
     const [form] = Form.useForm();
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         console.log(values);
+
+        const response = await productsService.create(values);
+        console.log("Create status:", response.statusText);
     };
     const onReset = () => {
         form.resetFields();
@@ -96,7 +100,7 @@ export default function CreateForm() {
                 </div>
 
                 <Form.Item
-                    name="category"
+                    name="categoryId"
                     label="Category"
                     rules={[
                         {
