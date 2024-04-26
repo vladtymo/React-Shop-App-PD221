@@ -11,23 +11,18 @@ export const productsService = {
     },
 
     create: function (model) {
-
-        model.image = model.image.originFileObj;
-
         const formData = new FormData();
 
         for (const key in model) {
-            const value = model[key];
-            formData.append(key, value);
-        }
-
-        for (const [k, v] of formData.entries()) {
-            console.log(k);
-            console.log(v);
+            formData.append(key, model[key]);
         }
 
         return api.post("", formData);
-    }
+    },
+
+    delete: function (id) {
+        return api.delete(`${id}`);
+    },
 }
 
 // ----- create separate service funcs

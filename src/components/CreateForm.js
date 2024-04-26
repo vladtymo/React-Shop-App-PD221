@@ -12,6 +12,9 @@ export default function CreateForm() {
     const onFinish = async (values) => {
         console.log(values);
 
+        // set correct image file
+        values.image = values.image.originFileObj;
+
         const response = await productsService.create(values);
         console.log("Create status:", response.statusText);
     };
