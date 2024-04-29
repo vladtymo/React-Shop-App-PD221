@@ -11,6 +11,10 @@ const getColumns = (deleteHandler) => {
             title: 'Id',
             dataIndex: 'id',
             key: 'id',
+            sorter: {
+                compare: (a, b) => a.id - b.id,
+                //multiple: 1,
+            },
         },
         {
             title: 'Image',
@@ -23,6 +27,10 @@ const getColumns = (deleteHandler) => {
             dataIndex: 'name',
             key: 'name',
             render: (text) => <a href="/">{text}</a>,
+            sorter: {
+                compare: (a, b) => a.name > b.name ? 1 : -1,
+                //multiple: 2,
+            },
         },
         {
             title: 'Category',
@@ -35,12 +43,20 @@ const getColumns = (deleteHandler) => {
             dataIndex: 'price',
             key: 'price',
             render: (text) => <span>{text}$</span>,
+            sorter: {
+                compare: (a, b) => a.price - b.price,
+                //multiple: 3,
+            },
         },
         {
-            title: 'Rating',
+            title: 'Discount',
             dataIndex: 'discount',
             key: 'discount',
             render: (text) => <span>{text}%</span>,
+            sorter: {
+                compare: (a, b) => a.discount - b.discount,
+                //multiple: 4,
+            },
         },
         {
             title: 'Action',
