@@ -3,6 +3,7 @@ import { Button, message, Popconfirm, Space, Table } from 'antd';
 import { makeFirstInUpperCase } from '../utils/utils';
 import { Link } from 'react-router-dom';
 import { productsService } from '../services/products';
+import { DeleteOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
 const getColumns = (deleteHandler) => {
     return [
@@ -46,7 +47,8 @@ const getColumns = (deleteHandler) => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <a href='/'>Show</a>
+                    <Button type='primary' icon={<InfoCircleOutlined />} href='#' />
+                    <Button icon={<EditOutlined />} />
                     <Popconfirm
                         title="Delete the product"
                         description={`Are you sure to delete the ${record.name}?`}
@@ -55,7 +57,7 @@ const getColumns = (deleteHandler) => {
                         cancelText="No"
                         placement='left'
                     >
-                        <Button danger>Delete</Button>
+                        <Button danger icon={<DeleteOutlined />} />
                     </Popconfirm>
                 </Space>
             ),
