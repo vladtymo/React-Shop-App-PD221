@@ -69,17 +69,21 @@ export default function Products() {
 
     useEffect(() => {
         (async function () {
-            const response = await productsService.get();
+            try {
+                const response = await productsService.getAll();
 
-            // TODO: fix server image url response
-            // set absolute path for images
-            const items = response.data;
-            for (const i of items) {
-                if (!i.imageUrl.includes("://"))
-                    i.imageUrl = process.env.REACT_APP_SERVER_HOST + i.imageUrl;
+                // TODO: fix server image url response
+                // set absolute path for images
+                const items = response.data;
+                for (const i of items) {
+                    if (!i.imageUrl.includes("://"))
+                        i.imageUrl = process.env.REACT_APP_SERVER_HOST + i.imageUrl;
+                }
+
+                setProducts(items);
+            } catch (error) {
+                console.log(error);
             }
-
-            setProducts(items);
         })();
     }, []);
 

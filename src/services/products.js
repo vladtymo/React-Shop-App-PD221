@@ -6,8 +6,16 @@ const api = axios.create({
 
 // ----- put service methods to one object
 export const productsService = {
-    get: function () {
+    getAll: function () {
         return api.get("all");
+    },
+
+    get: function (id) {
+        return api.get(`${id}`);
+    },
+
+    getCategories: function () {
+        return api.get("categories");
     },
 
     create: function (model) {
@@ -18,6 +26,10 @@ export const productsService = {
         }
 
         return api.post("", formData);
+    },
+
+    edit: function (model) {
+        return api.put("", model);
     },
 
     delete: function (id) {

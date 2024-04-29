@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Form, Input, InputNumber, Select, Space, Upload, message } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { UploadOutlined } from '@ant-design/icons';
@@ -8,8 +8,19 @@ const { Option } = Select;
 
 export default function CreateForm() {
 
+    const [categories, setCategories] = useState([]);
     const [form] = Form.useForm();
     const navigate = useNavigate();
+
+    const loadCategories = async () => {
+        const res = await productsService.getCategories();
+        const mapped = res.data.map(i => { return { value: i.id, label: i.name } });
+        setCategories(mapped);
+    }
+
+    useEffect(() => {
+        loadCategories();
+    }, []);
 
     const onFinish = async (values) => {
         console.log(values);
@@ -120,11 +131,7 @@ export default function CreateForm() {
                     <Select
                         placeholder="Select a product category"
                         allowClear
-                    >
-                        <Option value="1">Electronics</Option>
-                        <Option value="2">Transport</Option>
-                        <Option value="3">Sport</Option>
-                        <Option value="4">other</Option>
+                        options={categories}>
                     </Select>
                 </Form.Item>
 
