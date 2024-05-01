@@ -3,14 +3,18 @@ import { Button, Checkbox, Form, Input, InputNumber, Select, Space, Upload, mess
 import TextArea from 'antd/es/input/TextArea';
 import { UploadOutlined } from '@ant-design/icons';
 import { productsService } from '../services/products';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
 
 export default function CreateForm() {
 
     const [categories, setCategories] = useState([]);
+    const [editMode, setEditMode] = useState(false);
+    const [product, setProduct] = useState({});
+
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const params = useParams();
 
     const loadCategories = async () => {
         const res = await productsService.getCategories();
@@ -18,22 +22,51 @@ export default function CreateForm() {
         setCategories(mapped);
     }
 
+    const loadProduct = async () => {
+        const res = await productsService.get(params.id);
+        setProduct(res.data);
+        form.setFieldsValue(res.data);
+    }
+
     useEffect(() => {
+
+        if (params.id) {
+            setEditMode(true);
+            loadProduct();
+        }
+
         loadCategories();
+
     }, []);
 
     const onFinish = async (values) => {
         console.log(values);
 
-        // set correct image file
-        values.image = values.image.originFileObj;
+        if (editMode) {
 
-        const response = await productsService.create(values);
-        if (response.status === 200) {
+            // use original values
+            values.id = product.id;
+            values.imageUrl = product.imageUrl;
 
-            message.success(`Product created successfully!`);
-            navigate(-1);
+            const response = await productsService.edit(values);
+
+            if (response.status === 200) {
+                message.success(`Product edited successfully!`);
+            }
         }
+        else {
+            // set correct image file
+            values.image = values.image.originFileObj;
+
+            const response = await productsService.create(values);
+
+            if (response.status === 200) {
+                message.success(`Product created successfully!`);
+            }
+        }
+
+        // go back
+        navigate(-1);
     };
     const onReset = () => {
         form.resetFields();
@@ -47,7 +80,7 @@ export default function CreateForm() {
 
     return (
         <>
-            <h1 style={{ textAlign: "center" }}>Create New Product</h1>
+            <h1 style={{ textAlign: "center" }}>{editMode ? "Edit" : "Create"} Product</h1>
             <Form
                 form={form}
                 name="control-hooks"
@@ -169,7 +202,7 @@ export default function CreateForm() {
 
                     <Space>
                         <Button type="primary" htmlType="submit">
-                            Create
+                            {editMode ? "Edit" : "Create"}
                         </Button>
                         <Button htmlType="button" onClick={onReset}>
                             Reset
