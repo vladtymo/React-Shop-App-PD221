@@ -1,8 +1,20 @@
 import axios from "axios"
+import { tokensService } from "./tokens";
 
 const api = axios.create({
     baseURL: `${process.env.REACT_APP_API_URL}products`
 });
+api.interceptors.request.use(
+    (config) => {
+        // Get token and add it to header "Authorization" from secure storgage
+        const token = tokensService.getAccessToken();
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
 
 // ----- put service methods to one object
 export const productsService = {

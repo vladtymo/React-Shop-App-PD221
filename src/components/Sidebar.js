@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
-import { HomeOutlined, InfoCircleOutlined, ProductOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { HomeOutlined, InfoCircleOutlined, LoginOutlined, LogoutOutlined, ProductOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { accountsService } from '../services/accounts';
 const { Header } = Layout;
 
 const menuItems = [
@@ -24,6 +25,16 @@ const menuItems = [
         key: "/about",
         label: <Link to="/about">About</Link>,
         icon: <InfoCircleOutlined />
+    },
+    {
+        key: "/login",
+        label: <Link to="/login">Login</Link>,
+        icon: <LoginOutlined />
+    },
+    {
+        key: "/logout",
+        label: <span onClick={accountsService.logout}>Logout</span>,
+        icon: <LogoutOutlined />
     }
 ]
 
