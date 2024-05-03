@@ -1,28 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import { accountsService } from '../services/accounts';
 import { tokensService } from '../services/tokens';
-
-const onFinish = async (values) => {
-    console.log('Success:', values);
-
-    const res = await accountsService.login(values);
-
-    if (res.status != 200) {
-        message.error(`Something went wrong!`);
-        return;
-    }
-
-    tokensService.save(res.data);
-
-    console.log(tokensService.getAccessToken());
-};
-
-const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-};
+import { AccountsContext } from '../contexts/account.context';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+
+    const { login } = useContext(AccountsContext);
+    const navigate = useNavigate();
+
+    const onFinish = async (values) => {
+        console.log('Success:', values);
+
+        const res = await accountsService.login(values);
+
+        console.log(res);
+        if (res.status !== 200) {
+            message.error(`Something went wrong!`);
+            return;
+        }
+
+        tokensService.save(res.data);
+        const { email } = tokensService.getAccessTokenPayload();
+
+        // set login state
+        login(email);
+
+        navigate(-1);
+    };
+
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+
     return (
         <>
             <h1 style={center}>Login Form</h1>

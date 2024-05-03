@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Form, Input, InputNumber, Select, Space, Upload, message } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { UploadOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, UploadOutlined } from '@ant-design/icons';
 import { productsService } from '../services/products';
 import { useNavigate, useParams } from "react-router-dom";
-const { Option } = Select;
 
 export default function CreateForm() {
 
@@ -29,14 +28,13 @@ export default function CreateForm() {
     }
 
     useEffect(() => {
-
         if (params.id) {
             setEditMode(true);
             loadProduct();
         }
 
         loadCategories();
-
+        // eslint-disable-next-line
     }, []);
 
     const onFinish = async (values) => {
@@ -80,6 +78,9 @@ export default function CreateForm() {
 
     return (
         <>
+            <Button type="text" onClick={() => navigate(-1)}>
+                <ArrowLeftOutlined />
+            </Button>
             <h1 style={{ textAlign: "center" }}>{editMode ? "Edit" : "Create"} Product</h1>
             <Form
                 form={form}
